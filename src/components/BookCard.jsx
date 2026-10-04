@@ -15,7 +15,12 @@ function BookCard({ id, title, author, status, progress, onProgressChange, onDel
         aria-label={`Reading progress for ${title}`}
       />
       <p className="progress-label">{progress}% read</p>
-      <button onClick={() => onDelete(id)}>Remove</button>
+      <button
+  className="remove-btn"
+  onClick={() => window.confirm(`Remove "${title}" from your library?`) && onDelete(id)}
+>
+  Remove
+</button>
     </article>
   )
 }
