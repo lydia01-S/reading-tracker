@@ -1,9 +1,11 @@
 function BookCard({ id, title, author, status, progress, onProgressChange, onDelete }) {
+  const statusClass = `badge badge-${status.replace(/ /g, '-').toLowerCase()}`
+
   return (
     <article className="book-card">
       <h2>{title}</h2>
       <p>{author}</p>
-      <p>{status}</p>
+      <span className={statusClass}>{status}</span>
       <input
         type="range"
         min="0"
@@ -12,7 +14,7 @@ function BookCard({ id, title, author, status, progress, onProgressChange, onDel
         onChange={(e) => onProgressChange(id, Number(e.target.value))}
         aria-label={`Reading progress for ${title}`}
       />
-      <p>{progress}% read</p>
+      <p className="progress-label">{progress}% read</p>
       <button onClick={() => onDelete(id)}>Remove</button>
     </article>
   )

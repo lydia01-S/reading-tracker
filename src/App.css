@@ -1,3 +1,31 @@
+:root {
+  --bg: #faf7f2;
+  --card: #ffffff;
+  --text: #2b2b2b;
+  --muted: #6b6b6b;
+  --accent: #bf0000;
+  font-family: system-ui, sans-serif;
+}
+
+body { background: var(--bg); color: var(--text); margin: 0; }
+main { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
+
+.add-book { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.add-book input { padding: 0.5rem 0.75rem; border: 1px solid #ddd; border-radius: 8px; font: inherit; }
+
+button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  background: var(--card);
+  font: inherit;
+  cursor: pointer;
+}
+button:hover { border-color: var(--text); }
+
+.filters { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.filters button.active { background: var(--text); color: #fff; border-color: var(--text); }
+
 .book-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -5,18 +33,23 @@
 }
 
 .book-card {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 1rem;
-}
-
-.filters {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 0.5rem;
-  margin-bottom: 1rem;
 }
+.book-card h2 { margin: 0; font-size: 1.2rem; }
+.book-card p { margin: 0; }
 
-.filters button.active {
-  background: #222;
-  color: #fff;
-}
+.book-card input[type='range'] { width: 100%; accent-color: var(--accent); }
+
+.progress-label { font-size: 0.85rem; color: var(--muted); }
+
+.badge { font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 999px; }
+.badge-reading { background: #fff1d6; }
+.badge-finished { background: #dff3e4; }
+.badge-want-to-read { background: #e8eaf6; }
