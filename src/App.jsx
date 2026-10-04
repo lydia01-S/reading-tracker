@@ -1,121 +1,62 @@
 import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
+import BookCard from './components/BookCard'
 import './App.css'
 
+// Renamed from "books" to "initialBooks", and "status" removed,
+// because status is now worked out from progress
+const initialBooks = [
+  { id: 1, title: 'Pride and Prejudice', author: 'Jane Austen', progress: 100 },
+  { id: 2, title: 'Dune', author: 'Frank Herbert', progress: 45 },
+  { id: 3, title: 'The Hobbit', author: 'J.R.R. Tolkien', progress: 20 },
+  { id: 4, title: 'Circe', author: 'Madeline Miller', progress: 0 },
+  { id: 5, title: 'Normal People', author: 'Sally Rooney', progress: 100 },
+]
+
+const FILTERS = ['All', 'Reading', 'Finished', 'Want to read']
+
+// Outside App because it doesn't need state, just a plain helper
+const getStatus = (p) => (p === 0 ? 'Want to read' : p === 100 ? 'Finished' : 'Reading')
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [books, setBooks] = useState(initialBooks)
+  const [filter, setFilter] = useState('All')
+
+  const updateProgress = (id, progress) =>
+    setBooks((prev) => prev.map((b) => (b.id === id ? { ...b, progress } : b)))
+
+  const visible =
+    filter === 'All' ? books : books.filter((b) => getStatus(b.progress) === filter)
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <main>
+      <h1>My Library</h1>
 
-      <div className="ticks"></div>
+      <div className="filters">
+        {FILTERS.map((f) => (
+          <button
+            key={f}
+            className={f === filter ? 'active' : ''}
+            onClick={() => setFilter(f)}
+          >
+            {f}
+          </button>
+        ))}
+      </div>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+      <div className="book-grid">
+        {visible.map((book) => (
+          <BookCard
+            key={book.id}
+            id={book.id}
+            title={book.title}
+            author={book.author}
+            status={getStatus(book.progress)}
+            progress={book.progress}
+            onProgressChange={updateProgress}
+          />
+        ))}
+      </div>
+    </main>
   )
 }
 
