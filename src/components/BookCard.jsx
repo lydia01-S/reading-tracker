@@ -1,4 +1,4 @@
-function BookCard({ id, title, author, status, progress, onProgressChange }) {
+function BookCard({ id, title, author, status, progress, onProgressChange, onDelete }) {
   return (
     <article className="book-card">
       <h2>{title}</h2>
@@ -13,6 +13,7 @@ function BookCard({ id, title, author, status, progress, onProgressChange }) {
         aria-label={`Reading progress for ${title}`}
       />
       <p>{progress}% read</p>
+      <button onClick={() => onDelete(id)}>Remove</button>
     </article>
   )
 }
